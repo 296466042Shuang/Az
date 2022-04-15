@@ -13,15 +13,17 @@ class excelPipeline(object):
     def open_spider(self,spider):
         print("创建表格")
         self.wb = Workbook()
-        self.wb.create_sheet ("爬取")
-        self.ws = self.wb["爬取%d"%(spider)]
+        #self.wb.create_sheet("爬取")
+        self.wb.create_sheet("爬取%s"%(spider.name))
+        self.ws = self.wb["爬取%s"%(spider.name)]
         self.ws.append(['类别', '名称', '网址', '推特', '投资机构',"spider"])
         #用append函数往表格添加表头
 
     def process_item(self, item, spider):
     #process_item是默认的处理item的方法，就像parse是默认处理response的方法
         print("开始写入")
-        self.ws.append(item['category'], item['name'], item['url'], item['twitter'], item['funds'], spider)
+        content=[item['category'], item['name'], item['url'], item['twitter'], item['funds'], spider]
+        self.ws.append(content)
         #用append函数把数据都添加进表格
         return item
         #将item丢回给引擎，如果后面还有这个item需要经过的itempipeline，引擎会自己调度
